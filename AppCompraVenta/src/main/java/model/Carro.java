@@ -1,10 +1,15 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Carro {
 
     private static List<Producto> productosAgregados;
+
+    public static void inicializarCarro() {
+        productosAgregados = new ArrayList<>();
+    }
 
     public static void setProductosAgregados(Producto producto) {
         productosAgregados.add(producto);

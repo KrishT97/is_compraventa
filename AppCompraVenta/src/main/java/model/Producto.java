@@ -17,6 +17,10 @@ public class Producto {
         return precio;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setPrecio(double precio) {
         this.precio = precio;
     }
