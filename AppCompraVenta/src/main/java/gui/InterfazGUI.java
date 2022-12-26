@@ -261,11 +261,16 @@ public class InterfazGUI extends JFrame implements ActionListener {
                 if (Carro.getPrecioTotal() != 0) {
                     System.out.println("El calculo total del carro es " + Carro.getPrecioTotal());
                     System.out.println("Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta débito, paypal o monedero):");
-                    String pago = JOptionPane.showInputDialog(null, "El calculo total del carro es " + Carro.getPrecioTotal() + ". Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta debito, paypal o monedero):");
+                    String pago = JOptionPane.showInputDialog(null, "El calculo total del carro es " + Carro.getPrecioTotal() + ". Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta débito, paypal o bizum):");
 
-                    JOptionPane.showMessageDialog(null,Pago.realizarPago(pago));
-                    JOptionPane.showMessageDialog(null,Pedido.consultarPedido());
-                    JOptionPane.showMessageDialog(null, Notificacion.avisarNotificacion());
+                    if (Objects.equals(pago, "paypal") || Objects.equals(pago, "tarjeta débito") || Objects.equals(pago, "bizum")){
+                        JOptionPane.showMessageDialog(null,Pago.realizarPago(pago));
+                        JOptionPane.showMessageDialog(null,Pedido.consultarPedido());
+                        JOptionPane.showMessageDialog(null, Notificacion.avisarNotificacion());
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Error, el formato del método de pago es incorrecto. Vuelva a intentarlo.");
+                    }
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Error, el o los productos no suman a ninguna cantidad...");
