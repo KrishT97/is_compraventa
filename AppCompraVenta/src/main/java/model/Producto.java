@@ -1,36 +1,44 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Producto {
 
 
-    private int id;
+    public static List<Integer> ids;
     private double precio;
-
-    private String nombre;
-    private String descripcion;
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public double getPrecio() {
         return precio;
     }
 
-    public int getId() {
-        return id;
+    public static void setIds() {
+        ids = new ArrayList<>();
+    }
+
+    public static List<Integer> getIds() {
+        return ids;
+    }
+
+    public static int obtenerOcurrenciasId(int nuevoId){
+        int contador = 0;
+        for(Integer id : ids){
+            if (id == nuevoId){
+                contador += 1;
+            }
+        }
+        return contador;
     }
 
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+
+    public Producto(int id){
+        ids.add(id);
     }
 
-    public Producto(int id) {
-        this.id = id;
-    }
 
 }

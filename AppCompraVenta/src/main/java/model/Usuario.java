@@ -3,17 +3,17 @@ package model;
 public class Usuario {
 
     private static String nombre;
-    private static String contrasena;
     private static String correo;
 
-
-    public static void iniciarSesion(String nombreUsuario, String contrasenaUsuario, String correoUsuario) {
-        nombre = nombreUsuario;
-        contrasena = contrasenaUsuario;
-        correo = correoUsuario;
+    public static String getNombre() {
+        return nombre;
+    }
+    public static String getCorreo() {
+        return correo;
     }
 
-    public void cerrarSesion() {
-        // TODO: implementar la lógica para cerrar sesión
+    public static void iniciar(String nombreUsuario, String correoUsuario) {
+        nombre = nombreUsuario;
+        correo = correoUsuario;
     }
 }

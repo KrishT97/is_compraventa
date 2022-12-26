@@ -1,12 +1,13 @@
 package app;
 
-import gui.UserForm;
+import gui.InterfazGUI;
 
-public class AppForm {
-
+public class AppForm{
     public static void main(String[] args) {
-        // crear y mostrar la ventana
-        gui.UserForm ventana = new UserForm();
-        ventana.setVisible(true);
+        InterfazGUI gui = new InterfazGUI();
+        gui.setVisible(true);
     }
 }
+
+
+

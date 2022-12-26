@@ -4,24 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Carro {
+    public static List<Integer> idProductosSeleccionados;
 
-    private static List<Producto> productosAgregados;
+    static double precioTotal;
 
-    public static void inicializarCarro() {
-        productosAgregados = new ArrayList<>();
+    public static List<Integer> getIdProductosSeleccionados() {
+        return idProductosSeleccionados;
     }
 
-    public static void setProductosAgregados(Producto producto) {
-        productosAgregados.add(producto);
+    public Carro(){
+        idProductosSeleccionados = new ArrayList<>();
+
     }
 
+    public void setIdProductosSeleccionados(List<Integer> idProductosSeleccionados) {
+        Carro.idProductosSeleccionados = idProductosSeleccionados;
+    }
 
-    public static double calcularTotal() {
-        double precioTotal = 0;
-        for (Producto producto : productosAgregados) {
-            precioTotal += producto.getPrecio();
-        }
+    public static double getPrecioTotal() {
         return precioTotal;
+    }
+
+    public static void calcularSuma(double precio) {
+        precioTotal += precio;
 
 
     }

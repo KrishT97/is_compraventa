@@ -12,7 +12,7 @@ public class Cliente extends Usuario {
         return shipAddress;
     }
 
-    public static void agregarACarrito(Producto producto) {
-        Carro.setProductosAgregados(producto);
+    public static void agregarACarrito(Double precio) {
+        Carro.calcularSuma(precio);
     }
 }

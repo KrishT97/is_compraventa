@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 public class Catalogo {
-    private static List<Categoria> categorias;
+    private static List<String> categorias;
 
-    public static List<Categoria> getCategorias() {
+    public static List<String> getCategorias() {
         return categorias;
     }
 
@@ -13,19 +13,13 @@ public class Catalogo {
         categorias = new ArrayList<>();
     }
 
-    public static void anadirCategoria(Categoria nombreCategoria) {
+    public static void anadirCategoria(String nombreCategoria) {
 
-        if(getCategorias().contains(nombreCategoria)){
-            System.out.println("La categoría ya existe");
-        }
-        else{
+        if (getCategorias().contains(nombreCategoria)) {
+            System.out.println("La categoría ya existe.");
+        } else {
             categorias.add(nombreCategoria);
         }
 
-    }
-
-    public static void eliminarCategoria(Categoria categoria) {
-
-        categorias.remove(categoria);
     }
 }

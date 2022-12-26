@@ -4,29 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Categoria {
-    private String nombre;
     private static List<Producto> productos;
 
-    public static void listarProductos(Categoria categoria){
+    public static void listarProductos(String categoria){
         if (Catalogo.getCategorias().contains(categoria)){
             productos = new ArrayList<>();
         }
 
     }
 
-    public static List<Producto> getProductos() {
-        return productos;
+    public double getPrecioPorId(int id) {
+        for (Producto producto : productos) {
+            for(Integer idProducto: Producto.getIds()){
+                if (idProducto == id) {
+                    return producto.getPrecio();
+                }
+            }
+        }
+        return 0.0;
     }
 
-    public Categoria(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public static void anadirProducto(Producto producto) {
+    public void anadir(Producto producto) {
         productos.add(producto);
     }
 
-    public static void eliminarProducto(Producto producto) {
-        productos.remove(producto);
+    public void eliminar(Integer id) {
+        Producto.ids.remove(id);
     }
 }

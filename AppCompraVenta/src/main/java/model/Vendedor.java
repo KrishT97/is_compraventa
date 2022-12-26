@@ -3,40 +3,59 @@ package model;
 public class Vendedor extends Usuario {
 
 
-    public static void anadirProducto(Categoria nombreCategoria, int id, double precio, String nombre, String descripcion) {
-        Producto producto = new Producto(id);
-        if (Catalogo.getCategorias().contains(nombreCategoria)){
-            producto.setNombre(nombre);
-            producto.setDescripcion(descripcion);
+    public static String anadirProducto(String nombreCategoria, int id, double precio, String nombre, String descripcion) {
+        Categoria categoria = new Categoria();
+        if (Catalogo.getCategorias().contains(nombreCategoria) && !(Producto.getIds().contains(id))){
+            Producto producto = new Producto(id);
             producto.setPrecio(precio);
-            Categoria.anadirProducto(producto);
+            categoria.anadir(producto);
+            return "Perfectamente añadido con los siguientes datos:  \n" +
+                    "                    Categoría: " + nombreCategoria + ",\n" +
+                    "                    ID: " + id + ",\n" +
+                    "                    Precio: " + precio + " €,\n" +
+                    "                    Nombre del Producto: " + nombre + "\n" +
+                    "                    Descripcion: " + descripcion;
         }
         else{
-            System.out.println("No existe la categoria indicada, por lo cual no se añadira el producto.");
+            return "No existe la categoria indicada o el id ya esta en uso, por lo cual no se añadira el producto.";
         }
     }
 
-    public void eliminarProducto(Categoria nombreCategoria, int id) {
-        Producto producto = new Producto(id);
-        if (Catalogo.getCategorias().contains(nombreCategoria) && Categoria.getProductos().contains(producto)){
-            Categoria.eliminarProducto(producto);
+    public static String eliminarProducto(String nombreCategoria, int id) {
+        Categoria categoria = new Categoria();
+        if (Catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
+            categoria.eliminar(id);
+            return "Perfectamente eliminado con los siguientes datos: \n" +
+                    "                    Categoría: " + nombreCategoria + ", \n" +
+                    "                    ID: " + id;
         }
         else{
-            System.out.println("No existe la categoria indicada o el producto indicado, " +
-                    "por lo cual no se añadira el producto.");
+            return "No existe la categoria indicada o el producto indicado, " +
+                    "por lo cual no se añadira el producto.";
         }
     }
 
-    public static void modificarProducto(Categoria nombreCategoria, int id, double precio,String nombre, String descripcion) {
-        Producto producto = new Producto(id);
-        if (Catalogo.getCategorias().contains(nombreCategoria) && Categoria.getProductos().contains(producto)){
-            producto.setNombre(nombre);
-            producto.setDescripcion(descripcion);
-            producto.setPrecio(precio);
+    public static String modificarProducto(String nombreCategoria, int id, double precio,String nombre, String descripcion) {
+
+        if (Catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
+            int nuevoId = id+1;
+            if (Producto.obtenerOcurrenciasId(nuevoId) < 1){
+                Producto producto = new Producto(nuevoId);
+                producto.setPrecio(precio);
+                return "Perfectamente modificado con los siguientes datos:  \n" +
+                        "                    Categoría: " + nombreCategoria + ", \n" +
+                        "                    ID: " + nuevoId + ", \n" +
+                        "                    Precio: " + precio + " €, \n" +
+                        "                    Nombre del Producto: " + nombre + ", \n" +
+                        "                    Descripcion: " + descripcion;
+            }
+            else{
+                return "Ya has modificado el Id de ese producto.";
+            }
         }
         else{
-            System.out.println("No existe la categoria indicada o el producto indicado, " +
-                    "por lo cual no se añadira el producto.");
+            return "No existe la categoria indicada o el producto indicado, " +
+                    "por lo cual no se añadira el producto.";
         }
     }
 }
