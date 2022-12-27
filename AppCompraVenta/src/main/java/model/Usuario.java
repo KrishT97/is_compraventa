@@ -2,18 +2,18 @@ package model;
 
 public class Usuario {
 
-    private static String nombre;
-    private static String correo;
+    private String nombre;
+    private String correo;
 
-    public static String getNombre() {
+    public String getNombre() {
         return nombre;
     }
-    public static String getCorreo() {
+    public String getCorreo() {
         return correo;
     }
 
-    public static void iniciar(String nombreUsuario, String correoUsuario) {
-        nombre = nombreUsuario;
-        correo = correoUsuario;
+    public void iniciar(String nombreUsuario, String correoUsuario) {
+        this.nombre = nombreUsuario;
+        this.correo = correoUsuario;
     }
 }

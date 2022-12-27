@@ -29,11 +29,12 @@ public class InterfazGUI extends JFrame implements ActionListener {
     private final JButton buttonModificar;
     Categoria categoriaDisponible;
 
+    Catalogo catalogo = new Catalogo();
+
 
     public InterfazGUI() {
 
         empezarAplicacion();
-        categoriaDisponible = iniciarDisponibilidadProductos();
         setTitle("App CompraVenta");
         setSize(800, 650);
 
@@ -55,6 +56,7 @@ public class InterfazGUI extends JFrame implements ActionListener {
         JLabel labelNombreProducto = new JLabel("Nombre del producto:");
         JLabel labelDescripcion = new JLabel("Descripción:");
         JLabel labelItems = new JLabel("Número de items seleccionados:");
+
 
         fieldNombre = new JTextField();
         JTextField fieldContrasena = new JTextField();
@@ -112,6 +114,7 @@ public class InterfazGUI extends JFrame implements ActionListener {
         buttonComprar.setBounds(600,400,150,30);
 
         contentPane.add(labelInformacion);
+
         contentPane.add(labelInformacion1);
         contentPane.add(labelInformacion2);
         contentPane.add(labelInformacion3);
@@ -148,9 +151,11 @@ public class InterfazGUI extends JFrame implements ActionListener {
         buttonEliminar.addActionListener(this);
         buttonModificar.addActionListener(this);
         buttonComprar.addActionListener(this);
+
     }
     private void empezarAplicacion(){
-        Catalogo.iniciarCatalogo();
+
+        catalogo.iniciarCatalogo();
 
         String bicicleta = "Bicicleta";
         String hogar = "Hogar";
@@ -159,68 +164,64 @@ public class InterfazGUI extends JFrame implements ActionListener {
         String motos = "Motos";
         String deporte = "Deporte";
 
-        Catalogo.anadirCategoria(bicicleta);
-        Catalogo.anadirCategoria(hogar);
-        Catalogo.anadirCategoria(moda);
-        Catalogo.anadirCategoria(informatica);
-        Catalogo.anadirCategoria(motos);
-        Catalogo.anadirCategoria(deporte);
+        catalogo.anadirCategoria(bicicleta);
+        catalogo.anadirCategoria(hogar);
+        catalogo.anadirCategoria(moda);
+        catalogo.anadirCategoria(informatica);
+        catalogo.anadirCategoria(motos);
+        catalogo.anadirCategoria(deporte);
 
-        Categoria.listarProductos(bicicleta);
-        Categoria.listarProductos(hogar);
-        Categoria.listarProductos(moda);
-        Categoria.listarProductos(informatica);
-        Categoria.listarProductos(motos);
-        Categoria.listarProductos(deporte);
+        Categoria categoriaBicicleta = new Categoria(catalogo,bicicleta);
+        Categoria categoriaModa = new Categoria(catalogo,moda);
+        Categoria categoriaInformatica = new Categoria(catalogo,informatica);
+        Categoria categoriaMotos = new Categoria(catalogo,motos);
+        Categoria categoriaHogar = new Categoria(catalogo,hogar);
+        Categoria categoriaDeporte = new Categoria(catalogo,deporte);
 
-    }
-
-    public Categoria iniciarDisponibilidadProductos(){
-
-        Categoria categoriasDisponible = new Categoria();
         Producto.setIds();
+
         Producto producto1 = new Producto(1);
-        producto1.setPrecio(34);
-        categoriasDisponible.anadir(producto1);
+        producto1.setPrecio(19.3);
+        categoriaBicicleta.anadir(producto1);
         Producto producto2 = new Producto(2);
         producto2.setPrecio(8.9);
-        categoriasDisponible.anadir(producto2);
+        categoriaDeporte.anadir(producto2);
         Producto producto3 = new Producto(3);
         producto3.setPrecio(43.1);
-        categoriasDisponible.anadir(producto3);
+        categoriaHogar.anadir(producto3);
         Producto producto4 = new Producto(4);
         producto4.setPrecio(33.21);
-        categoriasDisponible.anadir(producto4);
+        categoriaInformatica.anadir(producto4);
         Producto producto5 = new Producto(5);
         producto5.setPrecio(11);
-        categoriasDisponible.anadir(producto5);
+        categoriaModa.anadir(producto5);
         Producto producto6 = new Producto(6);
         producto6.setPrecio(231);
-        categoriasDisponible.anadir(producto6);
-
-        return categoriasDisponible;
+        categoriaMotos.anadir(producto6);
 
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        Usuario.iniciar(fieldNombre.getText(),fieldCorreo.getText());
-
+        Usuario usuario = new Usuario();
+        usuario.iniciar(fieldNombre.getText(),fieldCorreo.getText());
+        Vendedor vendedor = new Vendedor();
+        
         if (e.getSource() == buttonCatalogo) {
             JOptionPane.showMessageDialog(null, "Hola, El catálogo tiene las siguientes categorias: " +
-                    Catalogo.getCategorias() + ", y estas son los IDs de Productos Disponibles en estos momentos: " + Producto.getIds());
+                    catalogo.getCategorias() + ", y estas son los IDs de Productos Disponibles en estos momentos: " + Producto.getIds());
         } else if (e.getSource() == buttonAnadir && fieldTipo.getText().equals("vendedor")) {
             String categoriaNombre = fieldCategoria.getText();
             int id = Integer.parseInt(fieldId.getText());
             double precio = Double.parseDouble(fieldPrecio.getText());
             String nombreProducto = fieldNombreProducto.getText();
             String descripcion = fieldDescripcion.getText();
-            String respuesta = Vendedor.anadirProducto(categoriaNombre, id, precio, nombreProducto, descripcion);
+            String respuesta = vendedor.anadirProducto(catalogo,categoriaNombre, id, precio, nombreProducto, descripcion);
             JOptionPane.showMessageDialog(null, respuesta);
         } else if (e.getSource() == buttonEliminar && fieldTipo.getText().equals("vendedor")) {
             String categoriaNombre = fieldCategoria.getText();
             int id = Integer.parseInt(fieldId.getText());
-            String respuesta = Vendedor.eliminarProducto(categoriaNombre, id);
+            String respuesta = vendedor.eliminarProducto(catalogo, categoriaNombre, id);
             JOptionPane.showMessageDialog(null, respuesta);
         } else if (e.getSource() == buttonModificar && fieldTipo.getText().equals("vendedor")) {
             String categoriaNombre = fieldCategoria.getText();
@@ -228,11 +229,12 @@ public class InterfazGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(fieldId.getText());
             String descripcion = fieldDescripcion.getText();
             double precio = Double.parseDouble(fieldPrecio.getText());
-            String respuesta = Vendedor.modificarProducto(categoriaNombre, id, precio, nombreProducto, descripcion);
+            String respuesta = vendedor.modificarProducto(catalogo,categoriaNombre, id, precio, nombreProducto, descripcion);
             JOptionPane.showMessageDialog(null, respuesta);
         }
         else if (e.getSource() == buttonComprar && fieldTipo.getText().equals("cliente")){
-            Cliente.setShipAddress(fieldDireccion.getText());
+            Cliente cliente = new Cliente();
+            cliente.setShipAddress(fieldDireccion.getText());
             int numItems = Integer.parseInt(fieldItems.getText());
             System.out.println(numItems);
             List<Integer> idProductosSeleccionados = new ArrayList<>();
@@ -249,8 +251,8 @@ public class InterfazGUI extends JFrame implements ActionListener {
             for (Integer idProducto : copia) {
                 for (Integer idProductosSeleccionado : idProductosSeleccionados) {
                     if (Objects.equals(idProducto, idProductosSeleccionado)) {
-                        double precioProducto = categoriaDisponible.getPrecioPorId(idProducto);
-                        Cliente.agregarACarrito(precioProducto);
+                        double precioProducto = catalogo.getPrecioPorId(idProducto);
+                        cliente.agregarACarrito(carro,precioProducto);
                         contadorAgregado += 1;
 
                     }
@@ -258,15 +260,18 @@ public class InterfazGUI extends JFrame implements ActionListener {
             }
             if(contadorAgregado == numItems){
                 JOptionPane.showMessageDialog(null,"Todos los productos añadidos en el carrito correctamente.");
-                if (Carro.getPrecioTotal() != 0) {
-                    System.out.println("El calculo total del carro es " + Carro.getPrecioTotal());
+                if (carro.getPrecioTotal() != 0) {
+                    System.out.println("El calculo total del carro es " + carro.getPrecioTotal());
                     System.out.println("Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta débito, paypal o monedero):");
-                    String pago = JOptionPane.showInputDialog(null, "El calculo total del carro es " + Carro.getPrecioTotal() + ". Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta débito, paypal o bizum):");
+                    String metodoPago = JOptionPane.showInputDialog(null, "El calculo total del carro es " + carro.getPrecioTotal() + ". Se va proceder a realizar el pago, eliga el metodo de pago (tarjeta débito, paypal o bizum):");
 
-                    if (Objects.equals(pago, "paypal") || Objects.equals(pago, "tarjeta débito") || Objects.equals(pago, "bizum")){
-                        JOptionPane.showMessageDialog(null,Pago.realizarPago(pago));
-                        JOptionPane.showMessageDialog(null,Pedido.consultarPedido());
-                        JOptionPane.showMessageDialog(null, Notificacion.avisarNotificacion());
+                    if (Objects.equals(metodoPago, "paypal") || Objects.equals(metodoPago, "tarjeta débito") || Objects.equals(metodoPago, "bizum")){
+                        Pago pago = new Pago();
+                        JOptionPane.showMessageDialog(null,pago.realizarPago(usuario,cliente,carro,metodoPago));
+                        Pedido pedido = new Pedido();
+                        JOptionPane.showMessageDialog(null,pedido.consultarPedido(usuario,cliente,carro));
+                        Notificacion notificacion = new Notificacion();
+                        JOptionPane.showMessageDialog(null, notificacion.avisarNotificacion(usuario));
                     }
                     else{
                         JOptionPane.showMessageDialog(null,"Error, el formato del método de pago es incorrecto. Vuelva a intentarlo.");

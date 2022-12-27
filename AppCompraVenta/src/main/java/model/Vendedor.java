@@ -3,10 +3,10 @@ package model;
 public class Vendedor extends Usuario {
 
 
-    public static String anadirProducto(String nombreCategoria, int id, double precio, String nombre, String descripcion) {
-        Categoria categoria = new Categoria();
-        if (Catalogo.getCategorias().contains(nombreCategoria) && !(Producto.getIds().contains(id))){
+    public String anadirProducto(Catalogo catalogo,String nombreCategoria, int id, double precio, String nombre, String descripcion) {
+        if (catalogo.getCategorias().contains(nombreCategoria) && !(Producto.getIds().contains(id))){
             Producto producto = new Producto(id);
+            Categoria categoria = new Categoria(catalogo,nombreCategoria);
             producto.setPrecio(precio);
             categoria.anadir(producto);
             return "Perfectamente añadido con los siguientes datos:  \n" +
@@ -21,9 +21,9 @@ public class Vendedor extends Usuario {
         }
     }
 
-    public static String eliminarProducto(String nombreCategoria, int id) {
-        Categoria categoria = new Categoria();
-        if (Catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
+    public String eliminarProducto(Catalogo catalogo,String nombreCategoria, int id) {
+        if (catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
+            Categoria categoria = new Categoria(catalogo,nombreCategoria);
             categoria.eliminar(id);
             return "Perfectamente eliminado con los siguientes datos: \n" +
                     "                    Categoría: " + nombreCategoria + ", \n" +
@@ -35,9 +35,9 @@ public class Vendedor extends Usuario {
         }
     }
 
-    public static String modificarProducto(String nombreCategoria, int id, double precio,String nombre, String descripcion) {
+    public String modificarProducto(Catalogo catalogo,String nombreCategoria, int id, double precio,String nombre, String descripcion) {
 
-        if (Catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
+        if (catalogo.getCategorias().contains(nombreCategoria) && Producto.getIds().contains(id)){
             int nuevoId = id+1;
             if (Producto.obtenerOcurrenciasId(nuevoId) < 1){
                 Producto producto = new Producto(nuevoId);

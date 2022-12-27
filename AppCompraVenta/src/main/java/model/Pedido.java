@@ -2,13 +2,13 @@ package model;
 
 public class Pedido {
 
-    public static String consultarPedido() {
+    public String consultarPedido(Usuario usuario, Cliente cliente, Carro carro) {
         return "Aqui estan los detalles del pedido: \n"+
-                "Nombre: " + Usuario.getNombre() +"\n" +
-                "Correo: " + Usuario.getCorreo() + "\n" +
-                "Direccion de envío: " + Cliente.getShipAddress() + "\n"+
-                "Lista ID de Productos Seleccionados: " + Carro.getIdProductosSeleccionados() + "\n"+
-                "Precio total: " + Carro.getPrecioTotal() + "\n" +
+                "Nombre: " + usuario.getNombre() +"\n" +
+                "Correo: " + usuario.getCorreo() + "\n" +
+                "Direccion de envío: " + cliente.getShipAddress() + "\n"+
+                "Lista ID de Productos Seleccionados: " + carro.getIdProductosSeleccionados() + "\n"+
+                "Precio total: " + carro.getPrecioTotal() + "\n" +
                 "Su pedido esta pagado.";
 
     }

@@ -3,12 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.round;
+
 public class Carro {
-    public static List<Integer> idProductosSeleccionados;
+    public  List<Integer> idProductosSeleccionados;
 
-    static double precioTotal;
+    double precioTotal;
 
-    public static List<Integer> getIdProductosSeleccionados() {
+    public  List<Integer> getIdProductosSeleccionados() {
         return idProductosSeleccionados;
     }
 
@@ -18,14 +20,14 @@ public class Carro {
     }
 
     public void setIdProductosSeleccionados(List<Integer> idProductosSeleccionados) {
-        Carro.idProductosSeleccionados = idProductosSeleccionados;
+        this.idProductosSeleccionados = idProductosSeleccionados;
     }
 
-    public static double getPrecioTotal() {
-        return precioTotal;
+    public double getPrecioTotal() {
+        return (double) round(precioTotal*100)/100;
     }
 
-    public static void calcularSuma(double precio) {
+    public void calcularSuma(double precio) {
         precioTotal += precio;
 
 

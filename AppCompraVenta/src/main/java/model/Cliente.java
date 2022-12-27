@@ -2,17 +2,17 @@ package model;
 
 public class Cliente extends Usuario {
 
-    private static String shipAddress;
+    private String shipAddress;
 
-    public static void setShipAddress(String shipAddressUsuario) {
+    public void setShipAddress(String shipAddressUsuario) {
         shipAddress = shipAddressUsuario;
     }
 
-    public static String getShipAddress() {
+    public String getShipAddress() {
         return shipAddress;
     }
 
-    public static void agregarACarrito(Double precio) {
-        Carro.calcularSuma(precio);
+    public void agregarACarrito(Carro carro,Double precio) {
+        carro.calcularSuma(precio);
     }
 }
