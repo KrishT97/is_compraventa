@@ -29,7 +29,6 @@ public class Catalogo {
         categoria1.anadirProducto(producto2);
         categoria2.anadirProducto(producto3);
         categoria2.anadirProducto(producto4);
-        System.out.println(categorias);
     }
 
     public void anadirCategoria(Categoria categoria) {

@@ -4,18 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Carro {
-    private final List<Producto> productos;
+
+    public void setEstadoPago(boolean estadoPago) {
+        this.estadoPago = estadoPago;
+    }
+
+    public boolean isEstadoPago() {
+        return estadoPago;
+    }
+
+    private boolean estadoPago;
+
+    private final List<Producto> productosSeleccionados;
 
     public Carro() {
-        this.productos = new ArrayList<>();
+        this.productosSeleccionados = new ArrayList<>();
     }
 
     public void agregarProducto(Producto producto) {
-        productos.add(producto);
+        productosSeleccionados.add(producto);
     }
 
     public List<Producto> getProductos() {
-        return productos;
+        return productosSeleccionados;
     }
 
     public void setPrecioTotal(double suma) {

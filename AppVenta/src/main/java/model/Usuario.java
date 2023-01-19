@@ -1,6 +1,18 @@
 package model;
 
 public class Usuario {
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     private String nombre;
     private String correo;
     private String direccion;

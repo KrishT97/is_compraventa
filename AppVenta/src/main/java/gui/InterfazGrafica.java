@@ -7,7 +7,6 @@ import javax.swing.*;
 
 
 public class InterfazGrafica {
-    private final AppCompraVenta app;
     private final JTextField campoNombreProducto;
     private final JTextField campoDescripcion;
     private final JTextField campoPrecio;
@@ -17,9 +16,7 @@ public class InterfazGrafica {
     private final JTextField campoDireccion;
     private final JTextField campoVendedorID;
 
-    public InterfazGrafica() {
-        app = new AppCompraVenta();
-        app.iniciarCatalogo();
+    public InterfazGrafica(AppCompraVenta app) {
         JFrame ventana = new JFrame("App Compra-Venta");
         ventana.setSize(800, 600);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,12 +38,14 @@ public class InterfazGrafica {
 
         JButton botonAnadirProducto = new JButton("Añadir producto");
         JButton botonEliminarProducto = new JButton("Eliminar producto");
+        JButton botonAnadirUsuario = new JButton("Añadir usuario");
+        JButton botonEliminarUsuario = new JButton("Eliminar usuario");
         JButton botonAnadirCategoria = new JButton("Añadir categoría");
         JButton botonEliminarCategoria = new JButton("Eliminar categoría");
         JButton botonIniciarSesion = new JButton("Iniciar sesión");
         JButton botonCerrarSesion = new JButton("Cerrar sesión");
         JButton botonAgregarCarrito = new JButton("Agregar al carrito");
-        JButton botonCalcularSuma = new JButton("Calcular suma");
+        JButton botonRealizarPago = new JButton("Realizar pago");
         JButton botonMostrarCatalogo = new JButton("Mostrar Catalogo");
 
         panelCatalogo.add(new JLabel("Nombre del producto:"));
@@ -64,7 +63,7 @@ public class InterfazGrafica {
         panelCatalogo.add(botonEliminarCategoria);
 
         panelCarro.add(botonAgregarCarrito);
-        panelCarro.add(botonCalcularSuma);
+        panelCarro.add(botonRealizarPago);
 
         panelUsuario.add(new JLabel("Nombre del usuario:"));
         panelUsuario.add(campoNombreUsuario);
@@ -78,6 +77,8 @@ public class InterfazGrafica {
         panelUsuario.add(campoShipAddress);
         panelUsuario.add(botonIniciarSesion);
         panelUsuario.add(botonCerrarSesion);
+        panelUsuario.add(botonAnadirUsuario);
+        panelUsuario.add(botonEliminarUsuario);
 
         pestanas.addTab("Catálogo", panelCatalogo);
         pestanas.addTab("Carro", panelCarro);
@@ -135,7 +136,7 @@ public class InterfazGrafica {
 
         botonAnadirCategoria.addActionListener(e -> {
             String nombreCategoria = campoNombreCategoria.getText();
-            if (app.getEstadoVendedor()) {
+            if (!app.getEstadoVendedor() && !app.getEstadoCliente()) {
                 if(!nombreCategoria.isEmpty()){
                     app.anadirCategoria(nombreCategoria);
                     JOptionPane.showMessageDialog(null, "Categoría añadida.", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -147,14 +148,14 @@ public class InterfazGrafica {
                 }
             }
             else{
-                JOptionPane.showMessageDialog(null, "No eres el vendedor, no puedes realizar esta operación.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Te has registrado como cliente o vendedor, no puedes realizar esta operación.", "Error", JOptionPane.ERROR_MESSAGE);
 
             }
         });
 
         botonEliminarCategoria.addActionListener(e -> {
             String nombreCategoria = campoNombreCategoria.getText();
-            if (app.getEstadoVendedor()) {
+            if (!app.getEstadoVendedor() && !app.getEstadoCliente()) {
                 if(!nombreCategoria.isEmpty()){
                     app.eliminarCategoria(nombreCategoria);
                     JOptionPane.showMessageDialog(null, "Categoría eliminada.", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -166,10 +167,32 @@ public class InterfazGrafica {
                 }
             }
             else{
-                JOptionPane.showMessageDialog(null, "No eres el vendedor, no puedes realizar esta operación.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Te has registrado como cliente o vendedor, no puedes realizar esta operación.", "Error", JOptionPane.ERROR_MESSAGE);
 
             }
 
+        });
+
+        botonAnadirUsuario.addActionListener(e-> {
+
+            if(!app.getEstadoVendedor() && !app.getEstadoCliente()){
+                String nombreUsuario = campoNombreUsuario.getText();
+                String correo = campoCorreo.getText();
+                String direccion = campoDireccion.getText();
+                app.anadirUsuario(nombreUsuario,correo,direccion);
+                JOptionPane.showMessageDialog(null, " Usuario " + nombreUsuario + " añadido correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
+
+            }
+
+        });
+        botonEliminarUsuario.addActionListener(e-> {
+
+            if(!app.getEstadoVendedor() && !app.getEstadoCliente()){
+                String nombreUsuario = campoNombreUsuario.getText();
+                app.eliminarUsuario(nombreUsuario);
+                JOptionPane.showMessageDialog(null, " Usuario " + nombreUsuario + " eliminado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
 
         botonIniciarSesion.addActionListener(e -> {
@@ -177,6 +200,7 @@ public class InterfazGrafica {
             String correo = campoCorreo.getText();
             String direccion = campoDireccion.getText();
             String vendedorId = campoVendedorID.getText();
+            app.iniciarSesion(nombreUsuario, correo, direccion);
             if (!vendedorId.isEmpty()){
                 app.iniciarVenta(vendedorId);
                 JOptionPane.showMessageDialog(null, " Iniciado como vendedor con id "+ app.getID() + "correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -186,7 +210,7 @@ public class InterfazGrafica {
 
             }
             else{
-                app.iniciarSesion(nombreUsuario, correo, direccion);
+                app.iniciarCompra();
                 JOptionPane.showMessageDialog(null, app.getUser() + " ha sido iniciado sesion correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
 
             }
@@ -195,20 +219,26 @@ public class InterfazGrafica {
         botonCerrarSesion.addActionListener(e -> app.cerrarSesion());
 
         botonAgregarCarrito.addActionListener(e -> {
-            String nombreProducto = campoNombreProducto.getText();
-            String nombreCategoria = campoNombreCategoria.getText();
-            Producto producto = app.buscarProducto(nombreProducto, nombreCategoria);
-            if(producto != null){
-                app.agregarCarrito(producto);
-                JOptionPane.showMessageDialog(null, "Se ha añadido el producto al carrito.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            if(app.getEstadoCliente()){
+                String nombreProducto = campoNombreProducto.getText();
+                String nombreCategoria = campoNombreCategoria.getText();
+                Producto producto = app.buscarProducto(nombreProducto, nombreCategoria);
+                if(producto != null){
+                    app.agregarCarrito(producto);
+                    JOptionPane.showMessageDialog(null, "Se ha añadido el producto al carrito.", "Información", JOptionPane.INFORMATION_MESSAGE);
 
+                }
             }
 
         });
 
-        botonCalcularSuma.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "La suma total es $" + app.calcularSuma()+ ".", "Información", JOptionPane.INFORMATION_MESSAGE);
+        botonRealizarPago.addActionListener(e -> {
+            if(app.getEstadoCliente()){
+                JOptionPane.showMessageDialog(null, "La suma total es $" + app.calcularPago()+ ".", "Información", JOptionPane.INFORMATION_MESSAGE);
+                app.generarPedido(campoDireccion.getText());
+                JOptionPane.showMessageDialog(null, "Se tienen los siguientes pedidos para usted:" + app.consultarPedidos(), "Información", JOptionPane.INFORMATION_MESSAGE);
 
+            }
         });
 
         ventana.add(pestanas);
