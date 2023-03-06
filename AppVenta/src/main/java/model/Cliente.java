@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente extends Usuario {
+
+
     private final Carro carro;
     private final ArrayList<Pedido> pedidos;
 
@@ -16,14 +18,13 @@ public class Cliente extends Usuario {
         carro.agregarProducto(producto);
     }
 
-    public double calcularPago(){
-        Pago pago = new Pago(carro);
-        return pago.calcularTotal();
+    public double calcularPago(Pago pago){
+        return pago.calcularTotal(carro);
     }
 
-    public void generarPedido(String shipAddress){
-        Pedido pedidoActual = new Pedido(carro, shipAddress);
-        pedidoActual.generar();
+    public void generarPedido(Pedido pedidoActual, String shipAddress){
+        pedidoActual.setShipAddress(shipAddress);
+        pedidoActual.generar(carro);
         pedidos.add(pedidoActual);
     }
 

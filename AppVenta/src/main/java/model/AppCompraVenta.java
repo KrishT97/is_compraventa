@@ -9,6 +9,9 @@ public class AppCompraVenta {
     private final ArrayList<Usuario> usuarios;
     private Vendedor vendedor;
     private Cliente cliente;
+    private Pago pago;
+    private Carro carro;
+    private Pedido pedido;
     private Usuario usuarioIniciado;
     private boolean vendedorActivo;
     private boolean clienteActivo;
@@ -56,6 +59,18 @@ public class AppCompraVenta {
         }
     }
 
+    public void publicarProducto(String nombreProducto,String descripcion,double precio){
+        if(vendedorActivo){
+            vendedor.publicarProducto(nombreProducto,descripcion,precio,vendedor);
+        }
+    }
+    public String getProductoPublicado(){
+        if(vendedorActivo){
+            return vendedor.getProducto().toString();
+        }
+        return null;
+    }
+
     public void eliminarProducto(Producto producto, String nombreCategoria) {
         Categoria categoria = catalogo.buscarCategoria(nombreCategoria);
         categoria.eliminarProducto(producto);
@@ -69,15 +84,23 @@ public class AppCompraVenta {
 
     public void agregarCarrito(Producto producto) {
         cliente.agregarCarrito(producto);
+        carro = new Carro();
+
+    }
+
+    public Vendedor getVendedorProducto(Producto producto){
+        return producto.getVendedor();
     }
 
 
     public double calcularPago() {
-        return cliente.calcularPago();
+        pago = carro.crearPago();
+        return cliente.calcularPago(pago);
     }
 
     public void generarPedido(String shipAddress){
-        cliente.generarPedido(shipAddress);
+        pedido = carro.crearPedido();
+        cliente.generarPedido(pedido,shipAddress);
     }
 
     public List<String> consultarPedidos(){
@@ -85,14 +108,22 @@ public class AppCompraVenta {
     }
 
 
-    public void iniciarSesion(String nombre, String correo, String direccion) {
-        Usuario usuario = new Usuario();
-        usuario.iniciarSesion(nombre,correo,direccion);
-        usuarioIniciado = usuario;
-        if (!usuarios.contains(usuarioIniciado)){
-            usuarios.add(usuarioIniciado);
-        }
+    public boolean iniciarSesion(String nombre, String correo, String direccion) {
 
+        for(Usuario usuario : usuarios){
+            if(Objects.equals(usuario.getNombre(), nombre) && Objects.equals(usuario.getCorreo(), correo) && Objects.equals(usuario.getDireccion(), direccion)){
+                usuarioIniciado = usuario;
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+    public void registrarCuenta(String nombre, String correo, String direccion){
+        Usuario usuario = new Usuario();
+        usuario.registrarCuenta(nombre, correo, direccion);
+        usuarios.add(usuario);
     }
 
     public void anadirUsuario(String nombre, String correo, String direccion){
@@ -126,9 +157,12 @@ public class AppCompraVenta {
     }
 
     public void cerrarSesion() {
-        usuarioIniciado.cerrarSesion();
         vendedorActivo = false;
         clienteActivo = false;
+    }
+
+    public void eliminarCuenta(){
+        usuarioIniciado.eliminarCuenta();
     }
 
     public String getID(){

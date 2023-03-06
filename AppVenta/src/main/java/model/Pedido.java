@@ -5,28 +5,30 @@ import java.util.List;
 
 public class Pedido {
 
-    private final String shipAddress;
+    private String shipAddress;
     private final List<Producto> productosPagados;
-    private final Carro carro;
+    public Carro carro;
 
     public List<Producto> getProductosPagados() {
         return productosPagados;
+    }
+    public void setShipAddress(String shipAddress){
+        this.shipAddress = shipAddress;
     }
 
     public String getShipAddress() {
         return shipAddress;
     }
 
-    public void generar(){
-        if (carro.isEstadoPago()){
-            productosPagados.addAll(carro.getProductos());
+    public void generar(Carro carro){
+        this.carro = carro;
+        if (this.carro.isEstadoPago()){
+            productosPagados.addAll(this.carro.getProductos());
         }
 
     }
 
-    public Pedido(Carro carro, String shipAddress){
-        this.carro = carro;
-        this.shipAddress = shipAddress;
+    public Pedido(){
         this.productosPagados = new ArrayList<>();
 
     }

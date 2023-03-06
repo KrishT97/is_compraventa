@@ -18,15 +18,16 @@ public class Usuario {
     private String direccion;
 
     public Usuario() {
+
     }
 
-    public void iniciarSesion(String nombre, String correo, String direccion) {
+    public void registrarCuenta(String nombre, String correo, String direccion) {
         this.nombre = nombre;
         this.correo = correo;
         this.direccion = direccion;
     }
 
-    public void cerrarSesion() {
+    public void eliminarCuenta() {
         this.nombre = null;
         this.correo = null;
         this.direccion = null;

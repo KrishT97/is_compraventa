@@ -3,20 +3,18 @@ package model;
 
 public class Pago {
 
-    private final Carro carro;
+    public Carro carro;
 
-    public double calcularTotal(){
+    public double calcularTotal(Carro carro){
         double suma = 0;
-        for (Producto producto : carro.getProductos()) {
+        this.carro = carro;
+        for (Producto producto : this.carro.getProductos()) {
             suma += producto.getPrecio();
         }
-        carro.setPrecioTotal(suma);
-        carro.setEstadoPago(true);
         return suma;
 
     }
 
-    public Pago(Carro carro) {
-        this.carro = carro;
+    public Pago() {
     }
 }

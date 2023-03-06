@@ -5,20 +5,38 @@ import java.util.List;
 
 public class Carro {
 
-    public void setEstadoPago(boolean estadoPago) {
-        this.estadoPago = estadoPago;
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    private Pedido pedido;
+
+    public Pago getPago() {
+        return pago;
+    }
+
+    private Pago pago;
+
+    public Pago crearPago(){
+        return this.pago = new Pago();
+    }
+
+    public Pedido crearPedido(){
+        return this.pedido = new Pedido();
     }
 
     public boolean isEstadoPago() {
-        return estadoPago;
+        return this.pago != null;
     }
 
-    private boolean estadoPago;
 
     private final List<Producto> productosSeleccionados;
 
     public Carro() {
         this.productosSeleccionados = new ArrayList<>();
+        this.pedido = null;
+        this.pago = null;
+
     }
 
     public void agregarProducto(Producto producto) {
@@ -27,9 +45,6 @@ public class Carro {
 
     public List<Producto> getProductos() {
         return productosSeleccionados;
-    }
-
-    public void setPrecioTotal(double suma) {
     }
 }
 
